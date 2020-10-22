@@ -3,3 +3,40 @@
   border: 1px solid black;
   height: 30rem;
 }
+
+.start-game {
+  width: 25%;
+  border: 1px solid black;
+  text-align: center;
+  padding: 1em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  cursor: pointer;
+}
+
+.start-game form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.start-game form > div {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.start-game form input {
+  border: 1px solid black;
+  border-radius: 0.2em;
+  margin-bottom: 2em;
+  height: 2em;
+  padding-left: 0.5em;
+}
+
+.start-game form button {
+  cursor: pointer;
+  padding: 0.4em;
+}

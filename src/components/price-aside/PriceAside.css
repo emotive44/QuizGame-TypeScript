@@ -18,6 +18,22 @@
   border: 1px solid black;
   padding: 0.4em;
   cursor: pointer;
+  position: relative;
+}
+
+.jokers div.marked {
+  pointer-events: none;
+}
+
+.jokers div.marked::after {
+  content: "X";
+  font-size: 3rem;
+  color: red;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -17px;
+  text-align: center;
 }
 
 .take-money {

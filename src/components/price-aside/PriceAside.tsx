@@ -21,12 +21,20 @@ const questionPrice = [
 ];
 
 const PriceAside: FC = () => {
+  const markedJoker = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.className = "marked";
+  };
+
+  const takeMoney = () => {
+    console.log("money");
+  };
+
   return (
     <aside className="price">
       <div className="jokers">
-        <div>Public</div>
-        <div>50/50</div>
-        <div>Friend</div>
+        <div onClick={markedJoker}>Public</div>
+        <div onClick={markedJoker}>50/50</div>
+        <div onClick={markedJoker}>Friend</div>
       </div>
 
       {questionPrice.map((x, i) => {
@@ -40,7 +48,9 @@ const PriceAside: FC = () => {
           />
         );
       })}
-      <div className="take-money">Take a money</div>
+      <div className="take-money" onClick={takeMoney}>
+        Take a money
+      </div>
     </aside>
   );
 };
