@@ -3,3 +3,29 @@
   border: 1px solid black;
   height: 30rem;
 }
+
+.jokers {
+  width: 85%;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid black;
+}
+
+.jokers div {
+  border-radius: 50%;
+  border: 1px solid black;
+  padding: 0.4em;
+  cursor: pointer;
+}
+
+.take-money {
+  width: 40%;
+  margin: 0.5rem auto;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 0.2em;
+  padding: 0.2em;
+}

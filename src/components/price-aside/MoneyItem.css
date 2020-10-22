@@ -1,0 +1,29 @@
+.money-count {
+  width: 85%;
+  margin: 0.2rem auto;
+  text-align: center;
+  display: flex;
+  border-radius: 0.2em;
+}
+
+.last {
+  border-bottom: 2px solid black;
+}
+
+.money-count span {
+  width: 2rem;
+  margin-right: 2.5rem;
+  color: gray;
+}
+
+.money-count .money {
+  width: 7rem;
+  text-align: center;
+  margin-left: 1rem;
+  color: gray;
+}
+
+.money-count span.win {
+  color: black;
+  font-weight: 700;
+}
