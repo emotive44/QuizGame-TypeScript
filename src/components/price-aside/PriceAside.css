@@ -1,7 +1,6 @@
 .price {
   width: 23%;
   border: 1px solid black;
-  height: 30rem;
 }
 
 .jokers {
@@ -23,6 +22,7 @@
 
 .jokers div.marked {
   pointer-events: none;
+  background: rgb(236, 236, 236);
 }
 
 .jokers div.marked::after {

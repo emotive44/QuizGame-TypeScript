@@ -1,7 +1,27 @@
 import React, { FC, useState } from "react";
 import "./QuizSection.css";
 
-const QuizSection: FC = () => {
+import { RootState } from "../../store/store";
+import { saveNickname } from "../../store/globalActions";
+import { connect, ConnectedProps } from "react-redux";
+
+const mapState = (state: RootState) => ({
+  user: state.global.nickname,
+});
+
+const mapDispatch = {
+  saveNickname: saveNickname,
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {
+  someProp: string;
+};
+
+const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
   const [start, setStart] = useState(true);
   const [nickname, setNickname] = useState("");
 
@@ -28,7 +48,10 @@ const QuizSection: FC = () => {
             </div>
             <button
               type="submit"
-              onClick={() => setStart(false)}
+              onClick={() => {
+                setStart(false);
+                saveNickname(nickname);
+              }}
               disabled={nickname.length > 6 ? false : true}
             >
               Start Game
@@ -36,10 +59,12 @@ const QuizSection: FC = () => {
           </form>
         </section>
       ) : (
-        <section> game</section>
+        <section>
+          game {someProp}, {user}
+        </section>
       )}
     </section>
   );
 };
 
-export default QuizSection;
+export default connector(QuizSection);
