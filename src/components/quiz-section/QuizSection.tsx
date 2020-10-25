@@ -45,6 +45,7 @@ const QuizSection: FC<Props> = ({
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
   let questionNum = currQuest ? currQuest : 0;
+  let currPrice = document.getElementById(`moneyCount-${currQuest}`);
 
   const nickNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -64,6 +65,11 @@ const QuizSection: FC<Props> = ({
   };
 
   const startGame = () => {
+    currPrice = document.getElementById(`moneyCount-1`);
+    if (currPrice) {
+      currPrice.style.background = "lightgray";
+    }
+
     setStart(false);
     currentQuestion(1);
     saveNickname(nickname);
@@ -71,6 +77,10 @@ const QuizSection: FC<Props> = ({
   };
 
   const restartGame = () => {
+    if (currPrice) {
+      currPrice.style.background = "transparent";
+    }
+
     startGame();
     setGameOver(false);
     setQuestion("");

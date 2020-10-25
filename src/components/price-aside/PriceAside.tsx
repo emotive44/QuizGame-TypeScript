@@ -1,7 +1,9 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import "./PriceAside.css";
-
 import MoneyItem from "./MoneyItem";
+
+import { connect, ConnectedProps } from "react-redux";
+import { RootState } from "../../store/store";
 
 const questionPrice = [
   100000,
@@ -20,13 +22,45 @@ const questionPrice = [
   50,
 ];
 
-const PriceAside: FC = () => {
+const mapState = (state: RootState) => ({
+  currQuest: state.global.currQuest,
+});
+
+const connector = connect(mapState, {});
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & {};
+
+const PriceAside: FC<Props> = ({ currQuest }) => {
+  useEffect(() => {
+    if (currQuest === 1) {
+      const currentPrice = document.getElementById(`moneyCount-${currQuest}`);
+      if (currentPrice) {
+        currentPrice.style.background = "lightgray";
+      }
+      return;
+    }
+
+    const lastPrice = document.getElementById(
+      `moneyCount-${currQuest && currQuest - 1}`
+    );
+    const nextPrice = document.getElementById(
+      `moneyCount-${currQuest && currQuest}`
+    );
+
+    if (lastPrice && nextPrice) {
+      lastPrice.style.background = "transparent";
+      nextPrice.style.background = "lightgray";
+    }
+  }, [currQuest]);
+
   const markedJoker = (e: React.MouseEvent<HTMLDivElement>) => {
     e.currentTarget.className = "marked";
   };
 
   const takeMoney = () => {
-    console.log("money");
+    console.log(currQuest);
   };
 
   return (
@@ -55,4 +89,4 @@ const PriceAside: FC = () => {
   );
 };
 
-export default PriceAside;
+export default connector(PriceAside);
