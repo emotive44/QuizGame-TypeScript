@@ -5,7 +5,7 @@
 }
 
 .start-game {
-  width: 25%;
+  max-width: 25em;
   border: 1px solid black;
   text-align: center;
   padding: 1em;
@@ -26,17 +26,38 @@
   display: flex;
   flex-direction: column;
   align-items: baseline;
+  width: 16em;
+  height: 4em;
+}
+
+.start-game form label {
+  margin-left: 1.2em;
 }
 
 .start-game form input {
   border: 1px solid black;
   border-radius: 0.2em;
-  margin-bottom: 2em;
   height: 2em;
   padding-left: 0.5em;
+  width: 16em;
+  margin: 0 auto;
+}
+
+.nickname-validation {
+  font-size: 0.7em;
+  margin-left: 2.2em;
+}
+
+.correct {
+  color: green;
+}
+
+.err {
+  color: red;
 }
 
 .start-game form button {
   cursor: pointer;
   padding: 0.4em;
+  margin-top: 2em;
 }

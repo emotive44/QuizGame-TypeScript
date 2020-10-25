@@ -24,10 +24,23 @@ type Props = PropsFromRedux & {
 const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
   const [start, setStart] = useState(true);
   const [nickname, setNickname] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const nickNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setNickname(e.currentTarget.value);
+    const nicknameValue = e.currentTarget.value;
+
+    setNickname(nicknameValue);
+
+    if (nicknameValue.length < 1) {
+      setErrMsg("Nickname is required");
+    } else if (nicknameValue.match(/^\d/)) {
+      setErrMsg("Nickname can not start with number");
+    } else if (nicknameValue.length < 5) {
+      setErrMsg("Nickname should be more then 5 characters");
+    } else {
+      setErrMsg("correct");
+    }
   };
 
   return (
@@ -45,6 +58,13 @@ const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
                 onChange={nickNameHandler}
                 placeholder="e.g. nickname44"
               />
+              <p
+                className={`nickname-validation ${
+                  errMsg === "correct" ? "correct" : "err"
+                }`}
+              >
+                {errMsg === "correct" ? "Nickname is correct" : errMsg}
+              </p>
             </div>
             <button
               type="submit"
@@ -52,7 +72,7 @@ const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
                 setStart(false);
                 saveNickname(nickname);
               }}
-              disabled={nickname.length > 6 ? false : true}
+              disabled={errMsg === "correct" ? false : true}
             >
               Start Game
             </button>
