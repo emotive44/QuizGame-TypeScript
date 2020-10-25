@@ -2,7 +2,10 @@ export const SET_NICKNAME = 'SET_NICKNAME';
 export const SET_NICKNAME_FAIL = 'SET_NICKNAME_FAIL';
 
 export const SET_CURRENT_QUESTION = 'SET_CURRENT_QUESTION';
-export const SET_CURRENT_QUESTION_FAIL = 'SET_CURRENT_QUESTION_FAIL'
+export const SET_CURRENT_QUESTION_FAIL = 'SET_CURRENT_QUESTION_FAIL';
+
+export const SET_USER_RECORD = 'SET_USER_RECORD';
+export const SET_USER_RECORD_FAIL = 'SET_USER_RECORD_FAIL';
 
 interface SetNicknameAction { 
   type: typeof SET_NICKNAME;
@@ -24,4 +27,24 @@ interface SetCurretQuestionFailAction {
   payload?: null;
 }
 
-export type GlobalActionTypes = SetNicknameAction | SetNicknameFailAction | SetCurrentQuestionAction | SetCurretQuestionFailAction;
+export interface UserRecord  { 
+  nickname: string;
+  winMoney: number;
+}
+
+interface SetUserRecordAction {
+  type: typeof SET_USER_RECORD;
+  payload: UserRecord;
+}
+
+interface SetUserRecordFailAction {
+  type: typeof SET_USER_RECORD_FAIL;
+  payload?: null;
+}
+
+export type GlobalActionTypes = SetNicknameAction | 
+  SetNicknameFailAction | 
+  SetCurrentQuestionAction | 
+  SetCurretQuestionFailAction | 
+  SetUserRecordAction | 
+  SetUserRecordFailAction;

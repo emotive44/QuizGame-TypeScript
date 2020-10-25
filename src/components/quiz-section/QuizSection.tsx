@@ -2,8 +2,13 @@ import React, { FC, useState, Fragment } from "react";
 import "./QuizSection.css";
 
 import { RootState } from "../../store/store";
-import { saveNickname, currentQuestion } from "../../store/globalActions";
+import {
+  saveNickname,
+  currentQuestion,
+  saveUserRecord,
+} from "../../store/globalActions";
 import { connect, ConnectedProps } from "react-redux";
+import { getWinMoney } from "../../utils/getWinMoney";
 
 const letters = new Map([
   [1, "A"],
@@ -20,6 +25,7 @@ const mapState = (state: RootState) => ({
 const mapDispatch = {
   saveNickname: saveNickname,
   currentQuestion,
+  saveUserRecord,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -36,6 +42,7 @@ const QuizSection: FC<Props> = ({
   currQuest,
   saveNickname,
   currentQuestion,
+  saveUserRecord,
 }) => {
   const [start, setStart] = useState(true);
   const [nickname, setNickname] = useState("");
@@ -102,6 +109,17 @@ const QuizSection: FC<Props> = ({
     setAnswers(shakedAnswers);
   };
 
+  const winMoney = () => {
+    const winMoney = getWinMoney(questionNum, false);
+
+    const userRecord = {
+      nickname,
+      winMoney: winMoney || 0,
+    };
+
+    saveUserRecord(userRecord);
+  };
+
   const chooseAnswer = (e: React.MouseEvent<HTMLDivElement>) => {
     const currElem = e.currentTarget;
     const markedAnswer = currElem.childNodes[1].textContent;
@@ -130,6 +148,8 @@ const QuizSection: FC<Props> = ({
       setTimeout(() => {
         setGameOver(true);
       }, 1000);
+
+      winMoney();
 
       currElem.style.background = "red";
     }
@@ -170,11 +190,18 @@ const QuizSection: FC<Props> = ({
           </form>
         </section>
       ) : gameOver ? (
-        <div onClick={restartGame} className="finish-game">
-          Game Over, Play again?
+        <div className="finish-game">
+          Game Over!!
+          <div>
+            <span>Change nickname</span>
+            <span onClick={restartGame}>Continue</span>
+          </div>
         </div>
       ) : (
         <Fragment>
+          <header>
+            <span>Good Luck, {user}!</span>
+          </header>
           <div
             className="question"
             dangerouslySetInnerHTML={{ __html: question }}
@@ -189,6 +216,8 @@ const QuizSection: FC<Props> = ({
               );
             })}
           </div>
+
+          <footer></footer>
         </Fragment>
       )}
     </section>

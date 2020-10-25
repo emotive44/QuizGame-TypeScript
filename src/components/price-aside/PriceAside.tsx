@@ -4,8 +4,10 @@ import MoneyItem from "./MoneyItem";
 
 import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/store";
+import { saveUserRecord } from "../../store/globalActions";
+import { getWinMoney } from "../../utils/getWinMoney";
 
-const questionPrice = [
+export const questionPrice = [
   100000,
   25000,
   10000,
@@ -24,15 +26,20 @@ const questionPrice = [
 
 const mapState = (state: RootState) => ({
   currQuest: state.global.currQuest,
+  nickname: state.global.nickname,
 });
 
-const connector = connect(mapState, {});
+const mapDispatch = {
+  saveUserRecord,
+};
+
+const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {};
 
-const PriceAside: FC<Props> = ({ currQuest }) => {
+const PriceAside: FC<Props> = ({ currQuest, nickname, saveUserRecord }) => {
   useEffect(() => {
     if (currQuest === 1) {
       const currentPrice = document.getElementById(`moneyCount-${currQuest}`);
@@ -60,7 +67,15 @@ const PriceAside: FC<Props> = ({ currQuest }) => {
   };
 
   const takeMoney = () => {
-    console.log(currQuest);
+    const questNum = currQuest ? currQuest : 0;
+    const winMoney = getWinMoney(questNum, true);
+
+    const userRecord = {
+      nickname: nickname || "",
+      winMoney: winMoney || 0,
+    };
+
+    saveUserRecord(userRecord);
   };
 
   return (
