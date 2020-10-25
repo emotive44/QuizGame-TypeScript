@@ -2,7 +2,7 @@ import React, { FC, useState, Fragment } from "react";
 import "./QuizSection.css";
 
 import { RootState } from "../../store/store";
-import { saveNickname } from "../../store/globalActions";
+import { saveNickname, currentQuestion } from "../../store/globalActions";
 import { connect, ConnectedProps } from "react-redux";
 
 const letters = new Map([
@@ -18,6 +18,7 @@ const mapState = (state: RootState) => ({
 
 const mapDispatch = {
   saveNickname: saveNickname,
+  currentQuestion,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -28,17 +29,18 @@ type Props = PropsFromRedux & {
   someProp: string;
 };
 
-const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
+const QuizSection: FC<Props> = ({
+  someProp,
+  user,
+  saveNickname,
+  currentQuestion,
+}) => {
   const [start, setStart] = useState(true);
   const [nickname, setNickname] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [question, setQuestion] = useState("question");
-  const [answers, setAnswers] = useState<string[]>([
-    "answer 1",
-    "answer 2",
-    "answer 3",
-    "answer 4",
-  ]);
+  const [question, setQuestion] = useState("");
+  const [correctAnswer, setCorretAnswer] = useState("");
+  const [answers, setAnswers] = useState<string[]>([]);
 
   const nickNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -55,6 +57,28 @@ const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
     } else {
       setErrMsg("correct");
     }
+  };
+
+  const startGame = () => {
+    setStart(false);
+    currentQuestion(0);
+    saveNickname(nickname);
+    getQuestion();
+  };
+
+  const getQuestion = async () => {
+    const res = await fetch(
+      "https://opentdb.com/api.php?amount=1&category=18&difficulty=easy&type=multiple"
+    );
+    const data = await res.json();
+    const shakedAnswers: string[] = [
+      ...data.results[0].incorrect_answers,
+      data.results[0].correct_answer,
+    ].sort(() => 0.5 - Math.random());
+
+    setQuestion(data.results[0].question);
+    setCorretAnswer(data.results[0].correct_answer);
+    setAnswers(shakedAnswers);
   };
 
   return (
@@ -83,8 +107,7 @@ const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
             <button
               type="submit"
               onClick={() => {
-                setStart(false);
-                saveNickname(nickname);
+                startGame();
               }}
               disabled={errMsg === "correct" ? false : true}
             >
