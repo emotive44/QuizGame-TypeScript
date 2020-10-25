@@ -26,6 +26,7 @@ const RecordsAside: FC = () => {
               index={i + 1}
               money={user.winMoney}
               name={user.nickname}
+              key={i}
             />
           );
         })}

@@ -101,6 +101,20 @@ const QuizSection: FC<Props> = ({
     setFinishGame(false);
   };
 
+  const changeNickname = () => {
+    if (currPrice) {
+      currPrice.style.background = "transparent";
+    }
+
+    setStart(true);
+    setNickname("");
+    setGameOver(false);
+    setQuestion("");
+    setAnswers([]);
+    setFinishGame(false);
+    setErrMsg("");
+  };
+
   const getQuestion = async () => {
     const res = await fetch(
       "https://opentdb.com/api.php?amount=1&category=18&difficulty=easy&type=multiple"
@@ -208,7 +222,7 @@ const QuizSection: FC<Props> = ({
           <div className={`finish-game ${finishGame ? "taked-money" : ""}`}>
             Game Over!!
             <div>
-              <span>Change nickname</span>
+              <span onClick={changeNickname}>Change nickname</span>
               <span onClick={restartGame}>Continue</span>
             </div>
           </div>
