@@ -12,8 +12,6 @@ const App: FC = () => {
   const [money, setWinMoney] = useState(0);
   const [finishGame, setFinishGame] = useState(false);
 
-  console.log(finishGame);
-
   return (
     <Provider store={store}>
       <main>

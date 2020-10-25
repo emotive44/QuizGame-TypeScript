@@ -5,29 +5,35 @@ import "./RecordsAside.css";
 import UserItem from "./UserItem";
 
 import { RootState } from "../../store/store";
-import { saveNickname } from "../../store/globalActions";
+// import { saveNickname } from "../../store/globalActions";
 
 const RecordsAside: FC = () => {
-  const user = useSelector((state: RootState) => state.global.nickname);
-  const dispatch = useDispatch();
+  const usersRecords = useSelector((state: RootState) => state.global.users);
+  // const dispatch = useDispatch();
 
-  const changeNickname = () => {
-    dispatch(saveNickname("changedName"));
-  };
+  // const changeNickname = () => {
+  //   dispatch(saveNickname("changedName"));
+  // };
 
   return (
     <aside className="records">
       <h2 className="title">Top 10</h2>
+      {usersRecords
+        .sort((a, b) => b.winMoney - a.winMoney)
+        .map((user, i) => {
+          return (
+            <UserItem
+              index={i + 1}
+              money={user.winMoney}
+              name={user.nickname}
+            />
+          );
+        })}
 
-      <div className="users-container">
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <UserItem />
-        <p onClick={changeNickname}>{user}</p>
-      </div>
+      {usersRecords.length < 1 && (
+        <p style={{ textAlign: "center" }}>Does not have any records yet.</p>
+      )}
+      <div className="users-container"></div>
     </aside>
   );
 };

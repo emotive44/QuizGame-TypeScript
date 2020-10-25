@@ -1,5 +1,6 @@
 .user {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.4em;
+  width: 95%;
+  margin: 0.2em auto;
 }
