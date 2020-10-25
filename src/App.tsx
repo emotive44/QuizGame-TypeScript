@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import "./App.css";
 
 import PriceAside from "./components/price-aside/PriceAside";
@@ -9,12 +9,22 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 
 const App: FC = () => {
+  const [money, setWinMoney] = useState(0);
+  const [finishGame, setFinishGame] = useState(false);
+
+  console.log(finishGame);
+
   return (
     <Provider store={store}>
       <main>
         <RecordsAside />
-        <QuizSection someProp="someprop" />
-        <PriceAside />
+        <QuizSection
+          money={money}
+          setMoney={setWinMoney}
+          finishGame={finishGame}
+          setFinishGame={setFinishGame}
+        />
+        <PriceAside setMoney={setWinMoney} setFinishGame={setFinishGame} />
       </main>
     </Provider>
   );

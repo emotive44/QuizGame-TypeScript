@@ -22,6 +22,10 @@
   background: red;
 }
 
+.taked-money {
+  background: green;
+}
+
 .finish-game > div {
   display: flex;
   justify-content: space-between;
@@ -30,6 +34,15 @@
 .finish-game span {
   border-bottom: 1px solid black;
   cursor: pointer;
+}
+
+.money-notification {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  font-size: 3em;
+  text-align: center;
+  transform: translateX(-50%) translateY(-70%);
 }
 
 .start-game form {

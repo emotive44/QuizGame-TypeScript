@@ -1,4 +1,4 @@
-import React, { FC, useState, Fragment } from "react";
+import React, { FC, useState, Fragment, useEffect } from "react";
 import "./QuizSection.css";
 
 import { RootState } from "../../store/store";
@@ -33,14 +33,20 @@ const connector = connect(mapState, mapDispatch);
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
-  someProp: string;
+  money: number;
+  setMoney: Function;
+  finishGame: boolean;
+  setFinishGame: (x: boolean) => void;
 };
 
 const QuizSection: FC<Props> = ({
-  someProp,
   user,
+  money,
+  setMoney,
   currQuest,
+  finishGame,
   saveNickname,
+  setFinishGame,
   currentQuestion,
   saveUserRecord,
 }) => {
@@ -92,6 +98,7 @@ const QuizSection: FC<Props> = ({
     setGameOver(false);
     setQuestion("");
     setAnswers([]);
+    setFinishGame(false);
   };
 
   const getQuestion = async () => {
@@ -111,12 +118,12 @@ const QuizSection: FC<Props> = ({
 
   const winMoney = () => {
     const winMoney = getWinMoney(questionNum, false);
-
     const userRecord = {
       nickname,
       winMoney: winMoney || 0,
     };
 
+    setMoney(winMoney);
     saveUserRecord(userRecord);
   };
 
@@ -149,11 +156,18 @@ const QuizSection: FC<Props> = ({
         setGameOver(true);
       }, 1000);
 
+      setFinishGame(false);
       winMoney();
 
       currElem.style.background = "red";
     }
   };
+
+  useEffect(() => {
+    if (finishGame) {
+      setGameOver(true);
+    }
+  }, [finishGame]);
 
   return (
     <section className="quiz">
@@ -190,13 +204,20 @@ const QuizSection: FC<Props> = ({
           </form>
         </section>
       ) : gameOver ? (
-        <div className="finish-game">
-          Game Over!!
-          <div>
-            <span>Change nickname</span>
-            <span onClick={restartGame}>Continue</span>
+        <Fragment>
+          <div className={`finish-game ${finishGame ? "taked-money" : ""}`}>
+            Game Over!!
+            <div>
+              <span>Change nickname</span>
+              <span onClick={restartGame}>Continue</span>
+            </div>
           </div>
-        </div>
+          <p className="money-notification">
+            {money === 0
+              ? "Unfortunately you win 0leva"
+              : `You win ${money}leva`}
+          </p>
+        </Fragment>
       ) : (
         <Fragment>
           <header>

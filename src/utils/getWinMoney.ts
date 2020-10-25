@@ -2,7 +2,9 @@ import { questionPrice } from '../components/price-aside/PriceAside';
 
 export const getWinMoney = (currQuest: number, takeMoney?: boolean) => {
   if(takeMoney) {
-    return [...questionPrice].sort((a, b) => a - b).slice(currQuest -1, currQuest)[0];
+    if(currQuest - 2 < 0) return 0;
+    
+    return [...questionPrice].sort((a, b) => a - b).slice(currQuest -2, currQuest-1)[0];
   }
 
   if(currQuest >= 5 && currQuest < 10) {

@@ -37,9 +37,20 @@ const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-type Props = PropsFromRedux & {};
+type Props = PropsFromRedux & {
+  setMoney: Function;
+  setFinishGame: (x: boolean) => void;
+};
 
-const PriceAside: FC<Props> = ({ currQuest, nickname, saveUserRecord }) => {
+const PriceAside: FC<Props> = ({
+  currQuest,
+  nickname,
+  setMoney,
+  setFinishGame,
+  saveUserRecord,
+}) => {
+  const questNum = currQuest ? currQuest : 0;
+
   useEffect(() => {
     if (currQuest === 1) {
       const currentPrice = document.getElementById(`moneyCount-${currQuest}`);
@@ -67,7 +78,6 @@ const PriceAside: FC<Props> = ({ currQuest, nickname, saveUserRecord }) => {
   };
 
   const takeMoney = () => {
-    const questNum = currQuest ? currQuest : 0;
     const winMoney = getWinMoney(questNum, true);
 
     const userRecord = {
@@ -75,6 +85,8 @@ const PriceAside: FC<Props> = ({ currQuest, nickname, saveUserRecord }) => {
       winMoney: winMoney || 0,
     };
 
+    setMoney(winMoney);
+    setFinishGame(true);
     saveUserRecord(userRecord);
   };
 
@@ -97,9 +109,13 @@ const PriceAside: FC<Props> = ({ currQuest, nickname, saveUserRecord }) => {
           />
         );
       })}
-      <div className="take-money" onClick={takeMoney}>
+      <button
+        className="take-money"
+        onClick={takeMoney}
+        disabled={!nickname || questNum <= 1 ? true : false}
+      >
         Take a money
-      </div>
+      </button>
     </aside>
   );
 };
