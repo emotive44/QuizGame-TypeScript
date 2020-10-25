@@ -14,6 +14,7 @@ const letters = new Map([
 
 const mapState = (state: RootState) => ({
   user: state.global.nickname,
+  currQuest: state.global.currQuest,
 });
 
 const mapDispatch = {
@@ -32,6 +33,7 @@ type Props = PropsFromRedux & {
 const QuizSection: FC<Props> = ({
   someProp,
   user,
+  currQuest,
   saveNickname,
   currentQuestion,
 }) => {
@@ -41,6 +43,8 @@ const QuizSection: FC<Props> = ({
   const [question, setQuestion] = useState("");
   const [correctAnswer, setCorretAnswer] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
+  const [gameOver, setGameOver] = useState(false);
+  let questionNum = currQuest ? currQuest : 0;
 
   const nickNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -61,9 +65,16 @@ const QuizSection: FC<Props> = ({
 
   const startGame = () => {
     setStart(false);
-    currentQuestion(0);
+    currentQuestion(1);
     saveNickname(nickname);
     getQuestion();
+  };
+
+  const restartGame = () => {
+    startGame();
+    setGameOver(false);
+    setQuestion("");
+    setAnswers([]);
   };
 
   const getQuestion = async () => {
@@ -79,6 +90,39 @@ const QuizSection: FC<Props> = ({
     setQuestion(data.results[0].question);
     setCorretAnswer(data.results[0].correct_answer);
     setAnswers(shakedAnswers);
+  };
+
+  const chooseAnswer = (e: React.MouseEvent<HTMLDivElement>) => {
+    const currElem = e.currentTarget;
+    const markedAnswer = currElem.childNodes[1].textContent;
+
+    if (correctAnswer === markedAnswer) {
+      currElem.style.background = "green";
+      currentQuestion(++questionNum);
+      setTimeout(() => {
+        getQuestion();
+      }, 1000);
+    } else {
+      Array.from(
+        document.getElementsByClassName("answer") as HTMLCollectionOf<
+          HTMLElement
+        >
+      ).forEach((x) => {
+        Array.from(x.childNodes).forEach((y) => {
+          if (y.textContent === correctAnswer) {
+            x.style.background = "green";
+          }
+
+          x.style.pointerEvents = "none";
+        });
+      });
+
+      setTimeout(() => {
+        setGameOver(true);
+      }, 1000);
+
+      currElem.style.background = "red";
+    }
   };
 
   return (
@@ -115,6 +159,10 @@ const QuizSection: FC<Props> = ({
             </button>
           </form>
         </section>
+      ) : gameOver ? (
+        <div onClick={restartGame} className="finish-game">
+          Game Over, Play again?
+        </div>
       ) : (
         <Fragment>
           <div
@@ -124,7 +172,7 @@ const QuizSection: FC<Props> = ({
           <div className="answers-container">
             {answers?.map((x, i) => {
               return (
-                <div className="answer" key={x} onClick={() => {}}>
+                <div className="answer" key={x} onClick={chooseAnswer}>
                   <span className="bold-letters">{letters.get(i + 1)})</span>
                   <span dangerouslySetInnerHTML={{ __html: x }} />
                 </div>

@@ -13,7 +13,7 @@ interface GlobalState {
 
 const initialState: GlobalState = { 
   nickname: '',
-  currQuest: 0,
+  currQuest: 1,
 }
 
 export default function globalReducer (state = initialState, action: GlobalActionTypes): GlobalState {
