@@ -1,9 +1,16 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, Fragment } from "react";
 import "./QuizSection.css";
 
 import { RootState } from "../../store/store";
 import { saveNickname } from "../../store/globalActions";
 import { connect, ConnectedProps } from "react-redux";
+
+const letters = new Map([
+  [1, "A"],
+  [2, "B"],
+  [3, "C"],
+  [4, "D"],
+]);
 
 const mapState = (state: RootState) => ({
   user: state.global.nickname,
@@ -25,6 +32,13 @@ const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
   const [start, setStart] = useState(true);
   const [nickname, setNickname] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [question, setQuestion] = useState("question");
+  const [answers, setAnswers] = useState<string[]>([
+    "answer 1",
+    "answer 2",
+    "answer 3",
+    "answer 4",
+  ]);
 
   const nickNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -79,9 +93,22 @@ const QuizSection: FC<Props> = ({ someProp, user, saveNickname }) => {
           </form>
         </section>
       ) : (
-        <section>
-          game {someProp}, {user}
-        </section>
+        <Fragment>
+          <div
+            className="question"
+            dangerouslySetInnerHTML={{ __html: question }}
+          />
+          <div className="answers-container">
+            {answers?.map((x, i) => {
+              return (
+                <div className="answer" key={x} onClick={() => {}}>
+                  <span className="bold-letters">{letters.get(i + 1)})</span>
+                  <span dangerouslySetInnerHTML={{ __html: x }} />
+                </div>
+              );
+            })}
+          </div>
+        </Fragment>
       )}
     </section>
   );

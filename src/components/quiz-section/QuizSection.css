@@ -4,6 +4,7 @@
   height: 30rem;
 }
 
+/* start-game form styles */
 .start-game {
   max-width: 25em;
   border: 1px solid black;
@@ -60,4 +61,39 @@
   cursor: pointer;
   padding: 0.4em;
   margin-top: 2em;
+}
+
+/* game-section styles */
+.question {
+  width: 80%;
+  margin: 2em auto;
+  margin-top: 1em;
+  padding-bottom: 1em;
+  border-bottom: 2px solid black;
+}
+
+.answers-container {
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+.answer {
+  width: 45%;
+  border: 1px dotted black;
+  padding: 0.5em;
+  border-radius: 0.2em;
+  margin-bottom: 2em;
+  cursor: pointer;
+}
+
+.answer span {
+  pointer-events: none;
+}
+
+.answer .bold-letters {
+  margin-right: 2em;
+  font-weight: bold;
 }
