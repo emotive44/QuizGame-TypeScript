@@ -40,6 +40,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & {
   setMoney: Function;
   setFinishGame: (x: boolean) => void;
+  setFrJoker: (x: boolean) => void;
 };
 
 const PriceAside: FC<Props> = ({
@@ -48,6 +49,7 @@ const PriceAside: FC<Props> = ({
   setMoney,
   setFinishGame,
   saveUserRecord,
+  setFrJoker,
 }) => {
   const questNum = currQuest ? currQuest : 0;
 
@@ -73,8 +75,13 @@ const PriceAside: FC<Props> = ({
     }
   }, [currQuest]);
 
-  const markedJoker = (e: React.MouseEvent<HTMLDivElement>) => {
+  const markedJoker = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.className = "marked";
+  };
+
+  const friendJoker = (e: React.MouseEvent<HTMLButtonElement>) => {
+    markedJoker(e);
+    setFrJoker(true);
   };
 
   const takeMoney = () => {
@@ -93,9 +100,15 @@ const PriceAside: FC<Props> = ({
   return (
     <aside className="price">
       <div className="jokers">
-        <div onClick={markedJoker}>Public</div>
-        <div onClick={markedJoker}>50/50</div>
-        <div onClick={markedJoker}>Friend</div>
+        <button onClick={markedJoker} disabled={questNum < 1 ? true : false}>
+          Public
+        </button>
+        <button onClick={markedJoker} disabled={questNum < 1 ? true : false}>
+          50/50
+        </button>
+        <button onClick={friendJoker} disabled={questNum < 1 ? true : false}>
+          Friend
+        </button>
       </div>
 
       {questionPrice.map((x, i) => {

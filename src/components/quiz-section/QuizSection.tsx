@@ -34,21 +34,25 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & {
   money: number;
+  frJoker: boolean;
   setMoney: Function;
   finishGame: boolean;
   setFinishGame: (x: boolean) => void;
+  setFrJoker: (x: boolean) => void;
 };
 
 const QuizSection: FC<Props> = ({
   user,
   money,
+  frJoker,
   setMoney,
   currQuest,
   finishGame,
+  setFrJoker,
   saveNickname,
   setFinishGame,
-  currentQuestion,
   saveUserRecord,
+  currentQuestion,
 }) => {
   const [start, setStart] = useState(true);
   const [nickname, setNickname] = useState("");
@@ -99,6 +103,7 @@ const QuizSection: FC<Props> = ({
     setQuestion("");
     setAnswers([]);
     setFinishGame(false);
+    clearJokers();
   };
 
   const changeNickname = () => {
@@ -113,6 +118,7 @@ const QuizSection: FC<Props> = ({
     setAnswers([]);
     setFinishGame(false);
     setErrMsg("");
+    clearJokers();
   };
 
   const getQuestion = async () => {
@@ -145,6 +151,8 @@ const QuizSection: FC<Props> = ({
     const currElem = e.currentTarget;
     const markedAnswer = currElem.childNodes[1].textContent;
 
+    setFrJoker(false);
+
     if (correctAnswer === markedAnswer) {
       currElem.style.background = "green";
       currentQuestion(++questionNum);
@@ -175,6 +183,12 @@ const QuizSection: FC<Props> = ({
 
       currElem.style.background = "red";
     }
+  };
+
+  const clearJokers = () => {
+    Array.from(document.getElementsByClassName("marked")).map((x) => {
+      x.classList.remove("marked");
+    });
   };
 
   useEffect(() => {
@@ -252,7 +266,14 @@ const QuizSection: FC<Props> = ({
             })}
           </div>
 
-          <footer></footer>
+          <footer>
+            {frJoker && (
+              <p>
+                I think that correct answer is{" "}
+                <span dangerouslySetInnerHTML={{ __html: correctAnswer }} />
+              </p>
+            )}
+          </footer>
         </Fragment>
       )}
     </section>

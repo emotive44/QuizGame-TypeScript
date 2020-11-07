@@ -11,6 +11,7 @@ import store from "./store/store";
 const App: FC = () => {
   const [money, setWinMoney] = useState(0);
   const [finishGame, setFinishGame] = useState(false);
+  const [frJoker, setFrJoker] = useState(false);
 
   return (
     <Provider store={store}>
@@ -21,8 +22,14 @@ const App: FC = () => {
           setMoney={setWinMoney}
           finishGame={finishGame}
           setFinishGame={setFinishGame}
+          frJoker={frJoker}
+          setFrJoker={setFrJoker}
         />
-        <PriceAside setMoney={setWinMoney} setFinishGame={setFinishGame} />
+        <PriceAside
+          setMoney={setWinMoney}
+          setFinishGame={setFinishGame}
+          setFrJoker={setFrJoker}
+        />
       </main>
     </Provider>
   );

@@ -135,3 +135,10 @@ header span {
   margin-right: 2em;
   font-weight: bold;
 }
+
+footer {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 3rem;
+  text-align: center;
+}
