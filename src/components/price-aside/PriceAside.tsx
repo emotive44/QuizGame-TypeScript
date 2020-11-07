@@ -6,7 +6,6 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/store";
 import { saveUserRecord } from "../../store/globalActions";
 import { getWinMoney } from "../../utils/getWinMoney";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 export const questionPrice = [
   100000,
@@ -43,6 +42,7 @@ type Props = PropsFromRedux & {
   setMoney: Function;
   setFinishGame: (x: boolean) => void;
   setFrJoker: (x: boolean) => void;
+  setPublJoker: (x: boolean) => void;
 };
 
 const PriceAside: FC<Props> = ({
@@ -52,6 +52,7 @@ const PriceAside: FC<Props> = ({
   correctAnswer,
   setFinishGame,
   saveUserRecord,
+  setPublJoker,
   setFrJoker,
 }) => {
   const questNum = currQuest ? currQuest : 0;
@@ -106,6 +107,11 @@ const PriceAside: FC<Props> = ({
     });
   };
 
+  const publicJoker = (e: React.MouseEvent<HTMLButtonElement>) => {
+    markedJoker(e);
+    setPublJoker(true);
+  };
+
   const takeMoney = () => {
     const winMoney = getWinMoney(questNum, true);
 
@@ -122,7 +128,7 @@ const PriceAside: FC<Props> = ({
   return (
     <aside className="price">
       <div className="jokers">
-        <button onClick={markedJoker} disabled={questNum < 1 ? true : false}>
+        <button onClick={publicJoker} disabled={questNum < 1 ? true : false}>
           Public
         </button>
         <button

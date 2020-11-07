@@ -1,6 +1,8 @@
 import React, { FC, useState, Fragment, useEffect } from "react";
 import "./QuizSection.css";
 
+import PublicJoker from "./PublicJoker";
+
 import { RootState } from "../../store/store";
 import {
   saveNickname,
@@ -38,10 +40,12 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & {
   money: number;
   frJoker: boolean;
+  publJoker: boolean;
   setMoney: Function;
   finishGame: boolean;
   setFinishGame: (x: boolean) => void;
   setFrJoker: (x: boolean) => void;
+  setPublJoker: (x: boolean) => void;
 };
 
 const QuizSection: FC<Props> = ({
@@ -50,9 +54,11 @@ const QuizSection: FC<Props> = ({
   frJoker,
   setMoney,
   currQuest,
+  publJoker,
   finishGame,
   correctAnswer,
   setFrJoker,
+  setPublJoker,
   saveNickname,
   setFinishGame,
   setCorrectAns,
@@ -65,6 +71,7 @@ const QuizSection: FC<Props> = ({
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [correctAnsIndx, setCorrectAnsIndx] = useState(0);
 
   let questionNum = currQuest ? currQuest : 0;
   let currPrice = document.getElementById(`moneyCount-${currQuest}`);
@@ -136,6 +143,9 @@ const QuizSection: FC<Props> = ({
       data.results[0].correct_answer,
     ].sort(() => 0.5 - Math.random());
 
+    setCorrectAnsIndx(
+      shakedAnswers.indexOf(data.results[0].correct_answer) + 1
+    );
     setQuestion(data.results[0].question);
     setCorrectAns(data.results[0].correct_answer);
     setAnswers(shakedAnswers);
@@ -157,6 +167,7 @@ const QuizSection: FC<Props> = ({
     const markedAnswer = currElem.childNodes[1].textContent;
 
     setFrJoker(false);
+    setPublJoker(false);
 
     if (correctAnswer === markedAnswer) {
       currElem.style.background = "green";
@@ -170,7 +181,7 @@ const QuizSection: FC<Props> = ({
           HTMLElement
         >
       ).forEach((x) => {
-        Array.from(x.childNodes).forEach((y) => {
+        Array.from(x.childNodes).forEach((y, i) => {
           if (y.textContent === correctAnswer) {
             x.style.background = "green";
           }
@@ -273,11 +284,12 @@ const QuizSection: FC<Props> = ({
 
           <footer>
             {frJoker && (
-              <p>
+              <p style={{ marginTop: "2em" }}>
                 I think that correct answer is{" "}
                 <span dangerouslySetInnerHTML={{ __html: correctAnswer }} />
               </p>
             )}
+            {publJoker && <PublicJoker correctAnsIndx={correctAnsIndx} />}
           </footer>
         </Fragment>
       )}

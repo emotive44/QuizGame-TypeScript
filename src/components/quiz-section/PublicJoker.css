@@ -1,0 +1,29 @@
+.public-joker {
+  margin-top: 1em;
+}
+
+.public-joker div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.public-joker span {
+  background: lightgrey;
+  width: 90%;
+  display: inline-block;
+  border-radius: 3em;
+  display: flex;
+}
+
+.public-joker small {
+  background: lightblue;
+  display: inline-block;
+  border-radius: 1em;
+  text-align: left;
+}
+
+.public-joker small::before {
+  content: "";
+  margin-right: 0.4em;
+}

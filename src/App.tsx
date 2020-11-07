@@ -12,6 +12,7 @@ const App: FC = () => {
   const [money, setWinMoney] = useState(0);
   const [finishGame, setFinishGame] = useState(false);
   const [frJoker, setFrJoker] = useState(false);
+  const [publJoker, setPublJoker] = useState(false);
 
   return (
     <Provider store={store}>
@@ -24,11 +25,14 @@ const App: FC = () => {
           setFinishGame={setFinishGame}
           frJoker={frJoker}
           setFrJoker={setFrJoker}
+          publJoker={publJoker}
+          setPublJoker={setPublJoker}
         />
         <PriceAside
           setMoney={setWinMoney}
           setFinishGame={setFinishGame}
           setFrJoker={setFrJoker}
+          setPublJoker={setPublJoker}
         />
       </main>
     </Provider>

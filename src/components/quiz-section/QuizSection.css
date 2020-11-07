@@ -19,11 +19,11 @@
 
 .finish-game {
   width: 30em;
-  background: red;
+  background: rgb(241, 157, 157);
 }
 
 .taked-money {
-  background: green;
+  background: rgb(183, 199, 183);
 }
 
 .finish-game > div {
@@ -139,6 +139,6 @@ header span {
 footer {
   width: 50%;
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: -1rem;
   text-align: center;
 }
