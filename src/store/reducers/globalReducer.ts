@@ -4,7 +4,9 @@ import {
   SET_CURRENT_QUESTION, 
   SET_CURRENT_QUESTION_FAIL,
   SET_USER_RECORD,
-  SET_USER_RECORD_FAIL, 
+  SET_USER_RECORD_FAIL,
+  SET_CORRECT_ANSWER,
+  SET_CORRECT_ANSWER_FAIL, 
   UserRecord,
   GlobalActionTypes 
 } from '../types';
@@ -13,12 +15,14 @@ interface GlobalState {
   nickname: string | null;
   currQuest: number | null;
   users: UserRecord[];
+  correctAns: string;
 }
 
 const initialState: GlobalState = { 
   nickname: '',
   currQuest: 0,
   users: [],
+  correctAns: '',
 }
 
 export default function globalReducer (state = initialState, action: GlobalActionTypes): GlobalState {
@@ -59,6 +63,16 @@ export default function globalReducer (state = initialState, action: GlobalActio
       return {
         ...state,
         users: state.users
+      }
+    case SET_CORRECT_ANSWER:
+      return {
+        ...state,
+        correctAns: typeof payload === 'string' ? payload : '',
+      }
+    case SET_CORRECT_ANSWER_FAIL: 
+      return {
+        ...state,
+        correctAns: state.correctAns,
       }
     default:
       return state;

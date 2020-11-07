@@ -6,6 +6,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { RootState } from "../../store/store";
 import { saveUserRecord } from "../../store/globalActions";
 import { getWinMoney } from "../../utils/getWinMoney";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 export const questionPrice = [
   100000,
@@ -27,6 +28,7 @@ export const questionPrice = [
 const mapState = (state: RootState) => ({
   currQuest: state.global.currQuest,
   nickname: state.global.nickname,
+  correctAnswer: state.global.correctAns,
 });
 
 const mapDispatch = {
@@ -47,6 +49,7 @@ const PriceAside: FC<Props> = ({
   currQuest,
   nickname,
   setMoney,
+  correctAnswer,
   setFinishGame,
   saveUserRecord,
   setFrJoker,
@@ -84,6 +87,25 @@ const PriceAside: FC<Props> = ({
     setFrJoker(true);
   };
 
+  const fiftyFiftyJoker = (e: React.MouseEvent<HTMLButtonElement>) => {
+    let removedAns = 0;
+
+    markedJoker(e);
+
+    Array.from(
+      document.getElementsByClassName("answer") as HTMLCollectionOf<HTMLElement>
+    ).forEach((div) => {
+      Array.from(div.childNodes).forEach((span, i) => {
+        if (i % 2 !== 0 && removedAns < 2) {
+          if (span.textContent !== correctAnswer) {
+            span.textContent = "";
+            removedAns++;
+          }
+        }
+      });
+    });
+  };
+
   const takeMoney = () => {
     const winMoney = getWinMoney(questNum, true);
 
@@ -103,7 +125,10 @@ const PriceAside: FC<Props> = ({
         <button onClick={markedJoker} disabled={questNum < 1 ? true : false}>
           Public
         </button>
-        <button onClick={markedJoker} disabled={questNum < 1 ? true : false}>
+        <button
+          onClick={fiftyFiftyJoker}
+          disabled={questNum < 1 ? true : false}
+        >
           50/50
         </button>
         <button onClick={friendJoker} disabled={questNum < 1 ? true : false}>

@@ -7,6 +7,9 @@ export const SET_CURRENT_QUESTION_FAIL = 'SET_CURRENT_QUESTION_FAIL';
 export const SET_USER_RECORD = 'SET_USER_RECORD';
 export const SET_USER_RECORD_FAIL = 'SET_USER_RECORD_FAIL';
 
+export const SET_CORRECT_ANSWER = 'SET_CORRECT_ANSWER';
+export const SET_CORRECT_ANSWER_FAIL = 'SET_CORRECT_ANSWER_FAIL';
+
 interface SetNicknameAction { 
   type: typeof SET_NICKNAME;
   payload: string;
@@ -42,9 +45,21 @@ interface SetUserRecordFailAction {
   payload?: null;
 }
 
+interface SetCorrectAnswerAction { 
+  type: typeof SET_CORRECT_ANSWER;
+  payload: string;
+}
+
+interface SetCorrectAnswerFailAction { 
+  type: typeof SET_CORRECT_ANSWER_FAIL;
+  payload?: null;
+}
+
 export type GlobalActionTypes = SetNicknameAction | 
   SetNicknameFailAction | 
   SetCurrentQuestionAction | 
   SetCurretQuestionFailAction | 
   SetUserRecordAction | 
-  SetUserRecordFailAction;
+  SetUserRecordFailAction |
+  SetCorrectAnswerAction |
+  SetCorrectAnswerFailAction;

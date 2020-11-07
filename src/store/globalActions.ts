@@ -6,6 +6,8 @@ import {
   SET_CURRENT_QUESTION_FAIL,
   SET_USER_RECORD,
   SET_USER_RECORD_FAIL,
+  SET_CORRECT_ANSWER,
+  SET_CORRECT_ANSWER_FAIL,
   UserRecord,
   GlobalActionTypes
 } from './types';
@@ -33,6 +35,15 @@ export const saveUserRecord = (user: UserRecord) => async (dispatch: Dispatch<Gl
     dispatch({ type: SET_USER_RECORD, payload: user });
   } catch (error) {
     dispatch({ type: SET_USER_RECORD_FAIL });
+    console.log(error);
+  }
+}
+
+export const setCorrectAns = (answer: string) => async (dispatch: Dispatch<GlobalActionTypes>) => {
+  try {
+    dispatch({ type: SET_CORRECT_ANSWER, payload: answer })
+  } catch (error) {
+    dispatch({ type: SET_CORRECT_ANSWER_FAIL });
     console.log(error);
   }
 }

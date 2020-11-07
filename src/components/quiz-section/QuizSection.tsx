@@ -6,6 +6,7 @@ import {
   saveNickname,
   currentQuestion,
   saveUserRecord,
+  setCorrectAns,
 } from "../../store/globalActions";
 import { connect, ConnectedProps } from "react-redux";
 import { getWinMoney } from "../../utils/getWinMoney";
@@ -20,12 +21,14 @@ const letters = new Map([
 const mapState = (state: RootState) => ({
   user: state.global.nickname,
   currQuest: state.global.currQuest,
+  correctAnswer: state.global.correctAns,
 });
 
 const mapDispatch = {
   saveNickname: saveNickname,
   currentQuestion,
   saveUserRecord,
+  setCorrectAns,
 };
 
 const connector = connect(mapState, mapDispatch);
@@ -48,9 +51,11 @@ const QuizSection: FC<Props> = ({
   setMoney,
   currQuest,
   finishGame,
+  correctAnswer,
   setFrJoker,
   saveNickname,
   setFinishGame,
+  setCorrectAns,
   saveUserRecord,
   currentQuestion,
 }) => {
@@ -58,9 +63,9 @@ const QuizSection: FC<Props> = ({
   const [nickname, setNickname] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [question, setQuestion] = useState("");
-  const [correctAnswer, setCorretAnswer] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
+
   let questionNum = currQuest ? currQuest : 0;
   let currPrice = document.getElementById(`moneyCount-${currQuest}`);
 
@@ -132,7 +137,7 @@ const QuizSection: FC<Props> = ({
     ].sort(() => 0.5 - Math.random());
 
     setQuestion(data.results[0].question);
-    setCorretAnswer(data.results[0].correct_answer);
+    setCorrectAns(data.results[0].correct_answer);
     setAnswers(shakedAnswers);
   };
 
